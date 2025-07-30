@@ -58,7 +58,7 @@ export default function NavBar() {
                                 {notificationCount > 99 ? '99+' : notificationCount}
                             </span>
                         </div>
-                        <UserCircle className="w-7 h-7 cursor-pointer hover:text-black" title="Profile" />
+                        <UserCircle className="w-7 h-7 cursor-pointer hover:text-black"  />
                     </div>
 
                     {/* Mobile Menu Toggle */}
