@@ -2,16 +2,29 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Bell, Mail, UserCircle, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function NavBar() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [mailCount, setMailCount] = useState(0);
     const [notificationCount, setNotificationCount] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef(null);
 
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
     return (
         <>
-            <nav className="w-full bg-white border-b border-gray-200 shadow-sm px-6 py-6 min-h-[80px] flex items-center justify-between relative z-50">
+            <nav className="w-full bg-white border-b border-gray-200  px-6 py-6 min-h-[80px] flex items-center justify-between relative z-50">
                 {/* Logo */}
                 <div className="flex-shrink-0">
                     <Link href="/" className="flex items-center">
@@ -28,7 +41,46 @@ export default function NavBar() {
                 {/* Desktop Nav Links (centered) */}
                 <div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center space-x-6 text-sm font-medium text-gray-700">
                     <Link href="/">Home</Link>
-                    <Link href="/become-a-creator">Become a Creator</Link>
+                    <div >
+                        <div className="relative inline-block text-left" ref={dropdownRef}>
+                            {/* Trigger button */}
+                            <button
+                                onClick={() => setIsOpen(!isOpen)}
+                                className="inline-flex justify-center   focus:outline-none"
+                            >
+                                Become a Creator
+                                <svg
+                                    className="ml-2 -mr-1 h-5 w-5"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            {/* Dropdown menu */}
+                            {isOpen && (
+                                <div className="absolute right-0 mt-2 w-56 origin-top-right bg-white border border-gray-200 rounded shadow-lg z-10">
+                                    <div className="py-1">
+                                        <Link
+                                            href="/become-a-creator"
+                                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            Become a Creator
+                                        </Link>
+                                        <Link
+                                            href="/become-a-member"
+                                            className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                        >
+                                            Become a Member
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     <Link href="/find-influencer">Find an Influencer</Link>
                     <Link href="/hub">Influencer Hub</Link>
                     <Link href="/plans">Plans</Link>
@@ -58,7 +110,7 @@ export default function NavBar() {
                                 {notificationCount > 99 ? '99+' : notificationCount}
                             </span>
                         </div>
-                        <UserCircle className="w-7 h-7 cursor-pointer hover:text-black"  />
+                        <UserCircle className="w-7 h-7 cursor-pointer hover:text-black" />
                     </div>
 
                     {/* Mobile Menu Toggle */}
