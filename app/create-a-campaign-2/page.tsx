@@ -1,10 +1,8 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function CampaignForm() {
-    const router = useRouter();
     const [form, setForm] = useState({
         network: '',
         niche: '',
@@ -20,10 +18,10 @@ export default function CampaignForm() {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleNext = () => {
-        const query = new URLSearchParams(form as any).toString();
-        router.push(`/create-a-campaign-2?${query}`);
-    };
+    // const handleNext = () => {
+    //     const query = new URLSearchParams(form as any).toString();
+    //     router.push(`/create-a-campaign-2?${query}`);
+    // };
 
     return (
         <div className="min-h-screen bg-white px-4 py-10 sm:px-10 text-gray-800">
@@ -31,7 +29,7 @@ export default function CampaignForm() {
                 {/* Top right nav link */}
                 <div className="flex justify-end mb-20">
                     <Link
-                        href="/campaign"
+                        href="/your-campaign"
                         className="inline-block px-6 py-2 text-white rounded-full bg-gradient-to-b from-[#264d99] to-[#66b3ff] text-sm font-semibold shadow-md"
                     >
                         Your Campaign

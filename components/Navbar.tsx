@@ -9,11 +9,11 @@ export default function NavBar() {
     const [mailCount, setMailCount] = useState(0);
     const [notificationCount, setNotificationCount] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
             }
         };
@@ -86,7 +86,7 @@ export default function NavBar() {
                     <Link href="/plans">Plans</Link>
                     <Link href="/about">About Us</Link>
                     <Link
-                        href="/campaign"
+                        href="/your-campaign"
                         className="ml-4 px-5 py-2 text-white text-sm font-semibold rounded-full bg-gradient-to-b from-[#264d99] to-[#66b3ff] shadow-md hover:opacity-90 transition"
                     >
                         Campaign

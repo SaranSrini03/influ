@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
 import InfluencerCard from "@/components/Card";
+import SearchSortBar from "@/components/SearchSortBar";
 
 
-const fakeData = Array.from({ length: 10 }, (_, i) => ({
+const fakeData = Array.from({ length: 20 }, (_, i) => ({
   id: i + 1,
 }));
 
@@ -21,6 +22,9 @@ export default function InfluencerPage() {
 
   return (
     <div className="min-h-screen px-18 py-10 bg-gray-50">
+      <div className="w-[94rem] mx-auto ">
+        <SearchSortBar />
+      </div>
       <div className="flex justify-between items-center mb-12">
         <h1 className="text-2xl font-semibold ml-30 text-gray-800">
           {fakeData.length} Results

@@ -21,10 +21,11 @@ export default function CampaignForm() {
 
   return (
     <div className="min-h-screen bg-white px-4 py-10 sm:px-10 text-gray-800">
+
       <div className="max-w-5xl mx-auto">
         <div className="flex justify-end mb-20">
           <Link
-            href="/campaign"
+            href="/your-campaign"
             className="inline-block px-6 py-2 text-white rounded-full bg-gradient-to-b from-[#264d99] to-[#66b3ff]  text-sm font-semibold shadow-md"
           >
             Your Campaign
