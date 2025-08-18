@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Sidebar from "@/components/Sidebar";
-import { Trash2 } from "lucide-react";
+import { Trash2, Pencil, X } from "lucide-react";
 
 const data = [
     { name: "Olivia Rhye", username: "@olivia", role: "Product Designer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/olivia.jpg" },
@@ -17,27 +17,35 @@ const data = [
     { name: "Andi Lane", username: "@andi", role: "Product Manager", invitation: "Invited", status: "Pending", avatar: "/avatars/andi.jpg" },
     { name: "Kate Morrison", username: "@kate", role: "QA Engineer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/kate.jpg" },
     { name: "John Smith", username: "@john", role: "QA Engineer", invitation: "Send invitation", status: "Pending", avatar: "/avatars/kate.jpg" },
-    { name: "Jane Doe", username: "@jane", role: "Frontend Developer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/kate.jpg" },
-    { name: "Jane Doe", username: "@jane", role: "Frontend Developer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/kate.jpg" },
-    { name: "Jane Doe", username: "@jane", role: "Frontend Developer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/kate.jpg" },
 ];
+
 
 export default function InfluencersPage() {
     const [currentPage, setCurrentPage] = useState(1);
+    interface Person {
+        name: string;
+        username: string;
+        role: string;
+        invitation: string;
+        status: string;
+        avatar: string;
+        productLink?: string;
+        type?: string;
+        noOfPost?: string;
+        deadline?: string;
+    }
+
+    const [selectedPerson, setSelectedPerson] = useState<Person | null>(null); // For modal
     const rowsPerPage = 10;
 
-    // Pagination calculation
     const totalPages = Math.ceil(data.length / rowsPerPage);
     const startIndex = (currentPage - 1) * rowsPerPage;
     const currentData = data.slice(startIndex, startIndex + rowsPerPage);
 
     return (
         <div className="flex min-h-screen bg-white text-sm">
-            {/* Sidebar */}
-
             <Sidebar />
 
-            {/* Main Content */}
             <main className="flex-1 p-6">
                 <div className="overflow-x-auto border rounded-lg">
                     <table className="w-full border-collapse">
@@ -54,9 +62,13 @@ export default function InfluencersPage() {
                         <tbody>
                             {currentData.map((person, idx) => (
                                 <tr key={idx} className="border-b hover:bg-gray-50">
-                                    <td className="p-3">
-                                        <input type="checkbox" />
+                                    {/* Edit Icon */}
+                                    <td className="p-4 text-gray-400 hover:text-blue-500 cursor-pointer">
+                                        <button onClick={() => setSelectedPerson(person)}>
+                                            <Pencil size={18} />
+                                        </button>
                                     </td>
+
                                     <td className="p-3 flex items-center gap-3">
                                         <Image
                                             src={person.avatar}
@@ -72,13 +84,9 @@ export default function InfluencersPage() {
                                     </td>
                                     <td className="p-3 text-gray-700">{person.role}</td>
                                     <td className="p-3">
-                                        {person.invitation === "Send invitation" ? (
-                                            <span className="text-blue-600 cursor-pointer hover:underline">
-                                                {person.invitation}
-                                            </span>
-                                        ) : (
-                                            <span className="text-gray-500">{person.invitation}</span>
-                                        )}
+                                        <span className="text-purple-700 bg-purple-200 px-2 py-1 rounded-full text-xs">
+                                            {person.invitation}
+                                        </span>
                                     </td>
                                     <td className="p-3">
                                         <span
@@ -90,7 +98,6 @@ export default function InfluencersPage() {
                                             {person.status}
                                         </span>
                                     </td>
-
                                     <td className="p-3 text-right">
                                         <button className="text-gray-400 hover:text-red-500">
                                             <Trash2 size={18} />
@@ -102,8 +109,7 @@ export default function InfluencersPage() {
                     </table>
                 </div>
 
-                {/* Pagination */}
-                <div className="flex justify-center items-center gap-2 mt-6 text-xs">
+                <div className="flex justify-center text-gray-600 items-center gap-2 mt-6 text-xs">
                     <button
                         onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                         disabled={currentPage === 1}
@@ -111,19 +117,38 @@ export default function InfluencersPage() {
                     >
                         &lt; Previous
                     </button>
-                    {[...Array(totalPages)].map((_, i) => {
-                        const page = i + 1;
-                        return (
+
+                    {(() => {
+                        const pages = [];
+                        const maxVisible = 4;
+                        if (totalPages <= maxVisible) {
+                            for (let i = 1; i <= totalPages; i++) {
+                                pages.push(i);
+                            }
+                        } else {
+                            if (currentPage <= 3) {
+                                pages.push(1, 2, 3, "...", totalPages);
+                            } else if (currentPage >= totalPages - 2) {
+                                pages.push(1, "...", totalPages - 2, totalPages - 1, totalPages);
+                            } else {
+                                pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages);
+                            }
+                        }
+
+                        return pages.map((page, idx) => (
                             <button
-                                key={page}
-                                onClick={() => setCurrentPage(page)}
-                                className={`px-3 py-1 border rounded ${currentPage === page ? "bg-blue-500 text-white" : "hover:bg-gray-100"
-                                    }`}
+                                key={idx}
+                                onClick={() => typeof page === "number" && setCurrentPage(page)}
+                                disabled={page === "..."}
+                                className={`px-3 py-1 border rounded 
+                                    ${currentPage === page ? "bg-blue-500 text-white" : "hover:bg-gray-100"} 
+                                    ${page === "..." ? "cursor-default" : ""}`}
                             >
                                 {page}
                             </button>
-                        );
-                    })}
+                        ));
+                    })()}
+
                     <button
                         onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                         disabled={currentPage === totalPages}
@@ -133,6 +158,101 @@ export default function InfluencersPage() {
                     </button>
                 </div>
             </main>
+
+            {/* Modal */}
+            {/* Modal */}
+            {selectedPerson && (
+                <div className="fixed inset-0 text-black bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-[600px] relative">
+                        {/* Close Button */}
+                        <button
+                            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+                            onClick={() => setSelectedPerson(null)}
+                        >
+                            <X size={18} />
+                        </button>
+
+                        <h2 className="text-lg font-bold mb-6">Edit Campaign</h2>
+
+                        <div className="grid grid-cols-2 gap-4">
+                            {/* Product detail */}
+                            <div>
+                                <label className="text-sm text-gray-600">Product detail</label>
+                                <input
+                                    type="file"
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            </div>
+
+                            {/* Product link */}
+                            <div>
+                                <label className="text-sm text-gray-600">Product link</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedPerson.productLink}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            </div>
+
+                            {/* Type */}
+                            <div>
+                                <label className="text-sm text-gray-600">Type</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedPerson.type}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            </div>
+
+                            {/* No of post */}
+                            <div>
+                                <label className="text-sm text-gray-600">No of post</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedPerson.noOfPost}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            </div>
+
+                            {/* Guidelines & Instructions */}
+                            <div>
+                                <label className="text-sm text-gray-600">Guidelines & Instructions</label>
+                                <input
+                                    type="file"
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            </div>
+
+                            {/* Deadline */}
+                            <div>
+                                <label className="text-sm text-gray-600">Deadline</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedPerson.deadline}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            </div>
+
+                            {/* Status (full width) */}
+                            <div className="col-span-2">
+                                <label className="text-sm text-gray-600">Status</label>
+                                <input
+                                    type="text"
+                                    defaultValue={selectedPerson.status}
+                                    className="w-full border rounded px-3 py-2 mt-1"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Save Button */}
+                        <div className="flex justify-center mt-6">
+                            <button className="bg-gradient-to-r from-blue-600 to-blue-400 text-white px-6 py-2 rounded-full shadow hover:from-blue-700 hover:to-blue-500">
+                                Set
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

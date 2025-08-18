@@ -1,25 +1,29 @@
-// app/influencers/page.jsx
 "use client";
 import { useState } from "react";
 import Image from "next/image";
 import Sidebar from "@/components/Sidebar";
-import { Trash2 } from "lucide-react";
 
 const data = [
-    { name: "Olivia Rhye", username: "@olivia", role: "Product Designer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/olivia.jpg" },
-    { name: "Phoenix Baker", username: "@phoenix", role: "Product Manager", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/phoenix.jpg" },
-    { name: "Lana Steiner", username: "@lana", role: "Frontend Developer", invitation: "Send invitation", status: "Pending", avatar: "/avatars/lana.jpg" },
-    { name: "Demi Wilkinson", username: "@demi", role: "Backend Developer", invitation: "Send invitation", status: "Pending", avatar: "/avatars/demi.jpg" },
-    { name: "Candice Wu", username: "@candice", role: "Fullstack Developer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/candice.jpg" },
-    { name: "Natali Craig", username: "@natali", role: "UX Designer", invitation: "Invited", status: "Pending", avatar: "/avatars/natali.jpg" },
-    { name: "Drew Cano", username: "@drew", role: "UX Copywriter", invitation: "Invited", status: "Pending", avatar: "/avatars/drew.jpg" },
-    { name: "Orlando Diggs", username: "@orlando", role: "UI Designer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/orlando.jpg" },
-    { name: "Andi Lane", username: "@andi", role: "Product Manager", invitation: "Invited", status: "Pending", avatar: "/avatars/andi.jpg" },
-    { name: "Kate Morrison", username: "@kate", role: "QA Engineer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/kate.jpg" },
-    { name: "John Smith", username: "@john", role: "QA Engineer", invitation: "Send invitation", status: "Pending", avatar: "/avatars/kate.jpg" },
-    { name: "Jane Doe", username: "@jane", role: "Frontend Developer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/kate.jpg" },
-    { name: "Jane Doe", username: "@jane", role: "Frontend Developer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/kate.jpg" },
-    { name: "Jane Doe", username: "@jane", role: "Frontend Developer", invitation: "Send invitation", status: "Accepted", avatar: "/avatars/kate.jpg" },
+    {
+        name: "Olivia Rhye",
+        username: "@olivia",
+        avatar: "/avatars/olivia.jpg",
+        cpp: 1500,
+        cps: 1000,
+        cpvid: 2500,
+        performanceHike: "10-15% eng - 2000",
+        spend: 7000,
+    },
+    ...Array(10).fill({
+        name: "Olivia Rhye",
+        username: "@olivia",
+        avatar: "/avatars/olivia.jpg",
+        cpp: 1500,
+        cps: 1000,
+        cpvid: 2500,
+        performanceHike: "10-15% eng - 2000",
+        spend: 7000,
+    }),
 ];
 
 export default function InfluencersPage() {
@@ -33,11 +37,8 @@ export default function InfluencersPage() {
 
     return (
         <div className="flex min-h-screen bg-white text-sm">
-            {/* Sidebar */}
-
             <Sidebar />
 
-            {/* Main Content */}
             <main className="flex-1 p-6">
                 <div className="overflow-x-auto border rounded-lg">
                     <table className="w-full border-collapse">
@@ -45,10 +46,12 @@ export default function InfluencersPage() {
                             <tr className="text-left">
                                 <th className="p-3 w-10"></th>
                                 <th className="p-3">Name</th>
-                                <th className="p-3">Role</th>
-                                <th className="p-3">Invitation</th>
-                                <th className="p-3">Status</th>
-                                <th className="p-3 w-12"></th>
+                                <th className="p-3">CPP</th>
+                                <th className="p-3">CPS</th>
+                                <th className="p-3">CPVID</th>
+                                <th className="p-3">Performance Hike</th>
+                                <th className="p-3">Spend</th>
+                                <th className="p-3">Budget</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,30 +73,14 @@ export default function InfluencersPage() {
                                             <div className="text-gray-500 text-xs">{person.username}</div>
                                         </div>
                                     </td>
-                                    <td className="p-3 text-gray-700">{person.role}</td>
+                                    <td className="p-3 text-gray-700">{person.cpp}</td>
+                                    <td className="p-3 text-gray-700">{person.cps}</td>
+                                    <td className="p-3 text-gray-700">{person.cpvid}</td>
+                                    <td className="p-3 text-gray-700">{person.performanceHike}</td>
+                                    <td className="p-3 text-gray-700">{person.spend}</td>
                                     <td className="p-3">
-                                        {person.invitation === "Send invitation" ? (
-                                            <span className="text-blue-600 cursor-pointer hover:underline">
-                                                {person.invitation}
-                                            </span>
-                                        ) : (
-                                            <span className="text-gray-500">{person.invitation}</span>
-                                        )}
-                                    </td>
-                                    <td className="p-3">
-                                        <span
-                                            className={`px-2 py-1 rounded-full text-xs ${person.status === "Accepted"
-                                                ? "bg-green-100 text-green-600"
-                                                : "bg-yellow-100 text-yellow-600"
-                                                }`}
-                                        >
-                                            {person.status}
-                                        </span>
-                                    </td>
-
-                                    <td className="p-3 text-right">
-                                        <button className="text-gray-400 hover:text-red-500">
-                                            <Trash2 size={18} />
+                                        <button className="bg-green-100 text-green-600 px-3 py-1 rounded-full hover:bg-green-200">
+                                            Set a budget
                                         </button>
                                     </td>
                                 </tr>
@@ -117,8 +104,11 @@ export default function InfluencersPage() {
                             <button
                                 key={page}
                                 onClick={() => setCurrentPage(page)}
-                                className={`px-3 py-1 border rounded ${currentPage === page ? "bg-blue-500 text-white" : "hover:bg-gray-100"
-                                    }`}
+                                className={`px-3 py-1 border rounded ${
+                                    currentPage === page
+                                        ? "bg-blue-500 text-white"
+                                        : "hover:bg-gray-100"
+                                }`}
                             >
                                 {page}
                             </button>

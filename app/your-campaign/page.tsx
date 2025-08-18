@@ -6,7 +6,7 @@ export default function YourCampaignPage() {
     const campaigns = [
         { name: "Beauty product", start: "28/12/2024", influencers: 58, reach: "15M", impression: "1M", platform: "Instagram, Tik Tok", budget: 30000, posts: 15, spent: 20000, end: "15/01/2025", status: "Active" },
         { name: "Beauty product", start: "28/12/2024", influencers: 78, reach: "15M", impression: "1M", platform: "Instagram, Tik Tok", budget: 30000, posts: 15, spent: 20000, end: "15/01/2025", status: "Active" },
-        { name: "Beauty product", start: "28/12/2024", influencers: 55, reach: "15M", impression: "1M", platform: "Instagram, Tik Tok", budget: 30000, posts: 15, spent: 20000, end: "15/01/2025", status: "End" },
+        { name: "Cosmetic product", start: "28/12/2024", influencers: 55, reach: "15M", impression: "1M", platform: "Instagram, Tik Tok", budget: 30000, posts: 15, spent: 20000, end: "15/01/2025", status: "End" },
         { name: "Beauty product", start: "28/12/2024", influencers: 60, reach: "15M", impression: "1M", platform: "Instagram, Tik Tok", budget: 30000, posts: 15, spent: 20000, end: "15/01/2025", status: "End" },
         { name: "Beauty product", start: "28/12/2024", influencers: 20, reach: "15M", impression: "1M", platform: "Instagram, Tik Tok", budget: 30000, posts: 15, spent: 20000, end: "15/01/2025", status: "End" },
         { name: "Beauty product", start: "28/12/2024", influencers: 28, reach: "15M", impression: "1M", platform: "Instagram, Tik Tok", budget: 30000, posts: 15, spent: 20000, end: "15/01/2025", status: "End" },
